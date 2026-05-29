@@ -18,7 +18,7 @@ bot.on('message', async (msg) => {
 
   try {
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const result = await model.generateContent(text);
 
