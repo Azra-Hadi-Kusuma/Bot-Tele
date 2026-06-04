@@ -1,6 +1,11 @@
 {
   "name": "bot-tele",
   "version": "1.0.0",
+  "description": "Telegram bot with OpenRouter AI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "openai": "^4.0.0",
     "node-telegram-bot-api": "^0.64.0"
