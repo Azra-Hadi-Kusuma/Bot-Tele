@@ -3,10 +3,10 @@ const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
-// ===== KONFIGURASI 9ROUTER =====
+// ===== KONFIGURASI 9ROUTER VIA NGORK =====
 const NINE_ROUTER_URL = "https://scant-opponent-drainage.ngrok-free.dev/v1/chat/completions";
 const MODEL_NAME = "antigravity-bot";
-const API_KEY = "sk-86350809175d5d3d-2mn5zu-a89d3c6b"; // API key kamu
+const API_KEY = "sk-86350809175d5d3d-2mn5zu-a89d3c6b";
 
 const systemPrompt = `Anda adalah asisten AI yang membantu dan ramah.`;
 
@@ -48,11 +48,13 @@ bot.on("message", async (msg) => {
             ...userHistory[chatId]
         ];
 
+        // PENTING: tambahkan header ngrok-skip-browser-warning
         const response = await fetch(NINE_ROUTER_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${API_KEY}`
+                "Authorization": `Bearer ${API_KEY}`,
+                "ngrok-skip-browser-warning": "true"  // <-- WAJIB!
             },
             body: JSON.stringify({
                 model: MODEL_NAME,
