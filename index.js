@@ -4,7 +4,7 @@ const token = process.env.TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
 // ===== KONFIGURASI 9ROUTER =====
-const NINE_ROUTER_URL = "http://localhost:20128/v1/chat/completions";
+const NINE_ROUTER_URL = "https://scant-opponent-drainage.ngrok-free.dev/v1/chat/completions";
 const MODEL_NAME = "antigravity-bot"; // Nama combo kamu
 const API_KEY = "sk_9router"; // API key default 9Router
 
