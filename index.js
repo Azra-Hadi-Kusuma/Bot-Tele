@@ -3,9 +3,10 @@ const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
+// ===== KONFIGURASI 9ROUTER =====
 const NINE_ROUTER_URL = "https://scant-opponent-drainage.ngrok-free.dev/v1/chat/completions";
 const MODEL_NAME = "antigravity-bot";
-const API_KEY = "sk_9router";
+const API_KEY = "sk-86350809175d5d3d-2mn5zu-a89d3c6b"; // API key kamu
 
 const systemPrompt = `Anda adalah asisten AI yang membantu dan ramah.`;
 
@@ -47,8 +48,6 @@ bot.on("message", async (msg) => {
             ...userHistory[chatId]
         ];
 
-        console.log("Mengirim request ke 9Router...");
-        
         const response = await fetch(NINE_ROUTER_URL, {
             method: "POST",
             headers: {
@@ -65,15 +64,13 @@ bot.on("message", async (msg) => {
 
         const data = await response.json();
         
-        console.log("Response status:", response.status);
-        console.log("Response data:", JSON.stringify(data).substring(0, 500));
-        
         if (!response.ok) {
-            bot.sendMessage(chatId, `❌ Error ${response.status}: ${data.error?.message || "Unknown"}`);
+            console.error("Error:", data);
+            bot.sendMessage(chatId, `❌ Error: ${data.error?.message || "Unknown"}`);
             return;
         }
 
-        let answer = data.choices?.[0]?.message?.content || "Tidak ada respons.";
+        let answer = data.choices[0]?.message?.content || "Tidak ada respons.";
         userHistory[chatId].push({ role: "assistant", content: answer });
         
         let safeAnswer = escapeMarkdown(answer);
@@ -82,8 +79,8 @@ bot.on("message", async (msg) => {
         await bot.sendMessage(chatId, safeAnswer, { parse_mode: "MarkdownV2" });
         
     } catch (error) {
-        console.error("Full error:", error);
-        bot.sendMessage(chatId, `❌ Error: ${error.message}`);
+        console.error(error);
+        bot.sendMessage(chatId, "❌ Error. Coba lagi nanti.");
     }
 });
 
