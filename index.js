@@ -3,12 +3,15 @@ const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
+// ===== KONFIGURASI 9ROUTER =====
 const NINE_ROUTER_URL = "http://localhost:20128/v1/chat/completions";
-const MODEL_NAME = "antigravity-bot";
-const API_KEY = "sk_9router"; // Ganti ke default dulu
+const MODEL_NAME = "antigravity-bot"; // Nama combo kamu
+const API_KEY = "sk_9router"; // API key default 9Router
 
+// System prompt
 const systemPrompt = `Anda adalah asisten AI yang membantu dan ramah.`;
 
+// Escape MarkdownV2
 function escapeMarkdown(text) {
     const reservedChars = ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'];
     let escaped = '';
@@ -38,13 +41,6 @@ bot.on("message", async (msg) => {
     bot.sendChatAction(chatId, "typing");
 
     try {
-        // Cek koneksi ke 9Router
-        const healthCheck = await fetch("http://localhost:20128/api/health", { method: "GET" }).catch(() => null);
-        if (!healthCheck || !healthCheck.ok) {
-            bot.sendMessage(chatId, "❌ Server 9Router tidak aktif. Jalankan `9router` di terminal terlebih dahulu.");
-            return;
-        }
-
         if (!userHistory[chatId]) userHistory[chatId] = [];
         userHistory[chatId].push({ role: "user", content: text });
         if (userHistory[chatId].length > 10) userHistory[chatId] = userHistory[chatId].slice(-10);
@@ -71,8 +67,8 @@ bot.on("message", async (msg) => {
         const data = await response.json();
         
         if (!response.ok) {
-            console.error("Error detail:", data);
-            bot.sendMessage(chatId, `❌ API Error: ${data.error?.message || "Unknown"}`);
+            console.error("Error:", data);
+            bot.sendMessage(chatId, `❌ Error: ${data.error?.message || "Unknown"}`);
             return;
         }
 
@@ -85,8 +81,8 @@ bot.on("message", async (msg) => {
         await bot.sendMessage(chatId, safeAnswer, { parse_mode: "MarkdownV2" });
         
     } catch (error) {
-        console.error("Full error:", error);
-        bot.sendMessage(chatId, `❌ Error: ${error.message}`);
+        console.error(error);
+        bot.sendMessage(chatId, "❌ Error. Coba lagi nanti.");
     }
 });
 
