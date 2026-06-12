@@ -3,9 +3,10 @@ const TelegramBot = require("node-telegram-bot-api");
 const token = process.env.TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 
+// ===== KONFIGURASI n9router via ngrok =====
 const NINE_ROUTER_URL = "https://scant-opponent-drainage.ngrok-free.dev/v1/chat/completions";
 const MODEL_NAME = "antigravity-bot";
-const API_KEY = "sk-86350809175d5d3d-2mn5zu-a89d3c6b";
+const API_KEY = "sk-86350809175d5d3d-5tkncf-39701096"; // API key baru
 
 const systemPrompt = `Anda adalah asisten AI yang membantu dan ramah.`;
 
@@ -46,7 +47,7 @@ bot.on("message", async (msg) => {
                 messages: messagesToSend,
                 temperature: 1.3,
                 max_tokens: 4096,
-                stream: false  // <-- TAMBAHKAN INI!
+                stream: false
             })
         });
 
@@ -62,7 +63,6 @@ bot.on("message", async (msg) => {
         
         userHistory[chatId].push({ role: "assistant", content: answer });
         
-        // Kirim tanpa escape dulu untuk testing
         await bot.sendMessage(chatId, answer);
         
     } catch (error) {
@@ -71,4 +71,4 @@ bot.on("message", async (msg) => {
     }
 });
 
-console.log("Bot aktif 🚀");
+console.log("Bot aktif dengan n9router 🚀");
