@@ -6,7 +6,7 @@ const bot = new TelegramBot(token, { polling: true });
 // ===== KONFIGURASI n9router via ngrok =====
 const NINE_ROUTER_URL = "https://scant-opponent-drainage.ngrok-free.dev/v1/chat/completions";
 const MODEL_NAME = "antigravity-bot";
-const API_KEY = "sk-86350809175d5d3d-5tkncf-39701096"; // API key baru
+const API_KEY = "sk-86350809175d5d3d-5tkncf-39701096"; // Sudah benar
 
 const systemPrompt = `Anda adalah asisten AI yang membantu dan ramah.`;
 
@@ -55,7 +55,7 @@ bot.on("message", async (msg) => {
         
         if (!response.ok) {
             console.error("Error:", data);
-            bot.sendMessage(chatId, `❌ Error: ${data.error?.message || "Unknown"}`);
+            bot.sendMessage(chatId, `❌ Error ${response.status}: ${data.error?.message || "Unknown"}`);
             return;
         }
 
